@@ -29,7 +29,21 @@ public class JobConfiguration {
 	@StepScope
 	public Tasklet helloWorldTasklet(@Value("#{jobParameters['message']}") String message) {
 		return (stepContribution, chukContext) -> {
-			globalValue.GLOBALSET.add("******** TOTO *******");
+			globalValue.GLOBALSET.add("*** STEP-1 ***");
+			System.out.printf("\t Executing Tasklet with BEAN parameter: %s %n",globalValue.GLOBALSET);
+			//System.out.println(message);
+			return RepeatStatus.FINISHED;
+		};
+	}
+
+	@Bean
+	@StepScope
+	public Tasklet tasklet2() {
+		return (stepContribution, chukContext) -> {
+			if (!globalValue.GLOBALSET.contains("*** STEP-2 ***"))
+				globalValue.GLOBALSET.add("*** STEP-2 ***");
+			else
+				globalValue.GLOBALSET.add("*** STEP-3 ***");
 			System.out.printf("\t Executing Tasklet with BEAN parameter: %s %n",globalValue.GLOBALSET);
 			//System.out.println(message);
 			return RepeatStatus.FINISHED;
@@ -42,7 +56,12 @@ public class JobConfiguration {
 	}
 
 	@Bean
+	public Step step2() {
+		return stepBuilderFactory.get("step2").tasklet(tasklet2()).build();
+	}
+
+	@Bean
 	public Job jobParametersJob() {
-		return jobBuilderFactory.get("jobParametersJob").start(step1()).build();
+		return jobBuilderFactory.get("jobParametersJob").start(step1()).next(step2()).next(step2()).build();
 	}
 }

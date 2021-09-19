@@ -13,8 +13,7 @@ public class GlobalValue {
 
    @PostConstruct
    public void init() {
-      for (String s : Set.of("AB-","CD-","EF"))
-         GLOBALSET.add(s);
+         GLOBALSET.add("* init *");
    }
 
     @Value("${mongodb.db}")
