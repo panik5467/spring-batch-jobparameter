@@ -1,5 +1,8 @@
 # spring-batch-jobparameter
 
+Understand Job Context and Step Context
+  [Passing Data to Future Steps](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/common-patterns.html#passingDataToFutureSteps)
+
 Added global variables in GlobalValue class
 
 - https://www.javainuse.com/spring/batchtaskchunk
